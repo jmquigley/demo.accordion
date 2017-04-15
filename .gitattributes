@@ -1,0 +1,9 @@
+* text=auto
+
+*.py text
+*.java text
+*.sh text
+
+*.xlsx binary
+*.jpg binary
+*.png binary
