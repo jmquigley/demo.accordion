@@ -1,0 +1,23 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"baseUrl": ".",
+		"allowSyntheticDefaultImports": true,
+		"declaration": true,
+		"experimentalDecorators": true,
+		"jsx": "react",
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strictNullChecks": false,
+		"suppressImplicitAnyIndexErrors": true,
+		"module": "commonjs",
+		"target": "es6"
+	},
+	"exclude": [
+		"node_modules"
+	]
+}
