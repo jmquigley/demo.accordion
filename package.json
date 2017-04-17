@@ -2,9 +2,20 @@
   "name": "accordion",
   "version": "0.0.1",
   "description": "A simple HTML accordion text widget",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmquigley/demo.accordion"
+  },
+  "bugs": {
+    "url": "https://github.com/jmquigley/demo.accordion/issues"
+  },
+  "engines": {
+    "node": ">=7.5"
+  },
   "main": "index.js",
   "scripts": {
-  	"all": "npm install && webpack",
+    "all": "npm install && npm run build",
+    "build": "webpack",
     "start": "node server.js",
     "watch": "webpack --watch --progress"
   },
@@ -14,10 +25,13 @@
     "@types/node": "^7.0.12",
     "@types/react": "^15.0.21",
     "@types/react-dom": "^0.14.23",
+    "@types/react-redux": "^4.4.38",
     "awesome-typescript-loader": "^3.1.2",
     "express": "^4.15.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-redux": "^5.0.4",
+    "redux": "^3.6.0",
     "typescript": "^2.2.2",
     "webpack": "^2.4.1"
   }
