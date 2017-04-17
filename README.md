@@ -29,7 +29,7 @@ The server will be on http://localhost:3000
 One can also setup a webpack watcher to play with the code.  Use:
 
 ```
-npm start watch
+npm run watch
 ```
 
 And the webpack will watch for code changes to the app and automatically rebuild the bundle (with typescript) for testing.

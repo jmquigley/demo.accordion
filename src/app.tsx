@@ -1,7 +1,10 @@
+import * as loremIpsum from 'lorem-ipsum';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {createStore} from 'redux';
 import {connect, Provider} from 'react-redux';
+
+require('./styles.css');
 
 interface ActionFn {
 	(): any;
@@ -20,9 +23,9 @@ interface AccordionProps extends State, Dispatch {
 	message?: string;
 }
 
-interface Action {
-	type: string;
-	val?: any;
+interface Action<T> {
+	type?: string;
+	val?: T;
 }
 
 let styles = {
@@ -34,14 +37,18 @@ let styles = {
 	}
 }
 
-let defaultProps: AccordionProps = {
-	header: "Hello from React",
-	message: "Lorem Ipsum"
+const defaultProps: AccordionProps = {
+	header: "Lorem Ipsum",
+	message: loremIpsum({units: 'paragraphs', random: null})
 };
 
+const nilAction: Action<string> = {
+	type: 'UNKNOWN',
+	val: 'Unknown action'
+}
 
 /* Reducer function for toggling current state */
-export let toggleAccordion = (state: State, action: Action): State => {
+const toggleAccordion = (state: State = {}, action: Action<any> = nilAction): State => {
 	switch(action.type) {
 		case '@@redux/INIT':
 			console.log('Init toggle');
@@ -51,7 +58,7 @@ export let toggleAccordion = (state: State, action: Action): State => {
 			}
 
 		case 'TOGGLE':
-			console.log(`toggle: ${state.active}`);
+			console.log(`current toggle (before state update): ${state.active}`);
 			return {
 				...state,
 				active: !state.active
@@ -80,7 +87,7 @@ const mapDispatchToProps = (dispatch: any): Dispatch => {
 	}
 }
 
-@connect<State, Dispatch, any>(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps, mapDispatchToProps)
 class Accordion extends React.Component<AccordionProps, any> {
 
 	constructor(props: AccordionProps) {
