@@ -6,8 +6,17 @@ import {connect, Provider} from 'react-redux';
 
 require('./styles.css');
 
-interface ActionFn {
-	(): any;
+interface Action<T> {
+	readonly type?: string;
+	readonly payload?: T;
+}
+
+interface ActionCreator<T> {
+	(payload?: T): Action<T>;
+}
+
+interface DispatchFn {
+	(): void;
 }
 
 interface State {
@@ -15,17 +24,12 @@ interface State {
 }
 
 interface Dispatch {
-	toggle?: ActionFn;
+	toggle?: DispatchFn;
 }
 
 interface AccordionProps extends State, Dispatch {
 	header?: string;
 	message?: string;
-}
-
-interface Action<T> {
-	type?: string;
-	val?: T;
 }
 
 let styles = {
@@ -44,11 +48,19 @@ const defaultProps: AccordionProps = {
 
 const nilAction: Action<string> = {
 	type: 'UNKNOWN',
-	val: 'Unknown action'
+	payload: 'Unknown action'
+}
+
+/* Action creator function */
+const actionToggle: ActionCreator<undefined> = () => {
+	// This action has no payload, so the template is "undefined"
+	return {
+		type: 'TOGGLE'
+	}
 }
 
 /* Reducer function for toggling current state */
-const toggleAccordion = (state: State = {}, action: Action<any> = nilAction): State => {
+const reducer = (state: State = {}, action: Action<any> = nilAction): State => {
 	switch(action.type) {
 		case '@@redux/INIT':
 			console.log('Init toggle');
@@ -58,7 +70,7 @@ const toggleAccordion = (state: State = {}, action: Action<any> = nilAction): St
 			}
 
 		case 'TOGGLE':
-			console.log(`current toggle (before state update): ${state.active}`);
+			console.log(`toggling current state from ${state.active} to ${!state.active}`);
 			return {
 				...state,
 				active: !state.active
@@ -80,13 +92,23 @@ const mapStateToProps = (state: State, ownProps: AccordionProps): AccordionProps
 }
 
 const mapDispatchToProps = (dispatch: any): Dispatch => {
+	// This maps functions to their corresponding dispatch mechanism
 	return {
 		toggle: () => {
-			dispatch({type: 'TOGGLE'})
+			dispatch(actionToggle());
 		}
 	}
 }
 
+/* Component definition - presentation */
+const AccordionComponent = (props: AccordionProps) => (
+	<div>
+		<h1 onClick={props.toggle}>{props.header}</h1>
+		<p style={props.active ? styles.active : styles.inactive}>{props.message}</p>
+	</div>
+);
+
+/* Container definition - logic */
 @connect(mapStateToProps, mapDispatchToProps)
 class Accordion extends React.Component<AccordionProps, any> {
 
@@ -95,17 +117,16 @@ class Accordion extends React.Component<AccordionProps, any> {
 	}
 
 	render() {
-		return (
-			<div>
-				<h1 onClick={this.props.toggle}>{this.props.header}</h1>
-				<p style={this.props.active ? styles.active : styles.inactive}>{this.props.message}</p>
-			</div>
-		);
+		return <AccordionComponent
+			active={this.props.active}
+			toggle={this.props.toggle}
+			header={this.props.header}
+			message={this.props.message} />
 	}
 }
 
 ReactDOM.render(
-	<Provider store={createStore(toggleAccordion)}>
+	<Provider store={createStore(reducer)}>
 		<Accordion header="blah, blah, blah" />
 	</Provider>,
 	document.getElementById('app')
