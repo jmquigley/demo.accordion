@@ -41,6 +41,10 @@ let styles = {
 	}
 }
 
+let initialState: State = {
+	active: true
+}
+
 const defaultProps: AccordionProps = {
 	header: "Lorem Ipsum",
 	message: loremIpsum({units: 'paragraphs', random: null})
@@ -62,13 +66,6 @@ const actionToggle: ActionCreator<undefined> = () => {
 /* Reducer function for toggling current state */
 const reducer = (state: State = {}, action: Action<any> = nilAction): State => {
 	switch(action.type) {
-		case '@@redux/INIT':
-			console.log('Init toggle');
-			return {
-				...state,
-				active: true
-			}
-
 		case 'TOGGLE':
 			console.log(`toggling current state from ${state.active} to ${!state.active}`);
 			return {
@@ -126,7 +123,7 @@ class Accordion extends React.Component<AccordionProps, any> {
 }
 
 ReactDOM.render(
-	<Provider store={createStore(reducer)}>
+	<Provider store={createStore(reducer, initialState)}>
 		<Accordion header="blah, blah, blah" />
 	</Provider>,
 	document.getElementById('app')
