@@ -32,15 +32,6 @@ interface AccordionProps extends State, Dispatch {
 	message?: string;
 }
 
-let styles = {
-	active: {
-		display: 'inherit'
-	},
-	inactive: {
-		display: 'none'
-	}
-}
-
 let initialState: State = {
 	active: true
 }
@@ -101,7 +92,7 @@ const mapDispatchToProps = (dispatch: any): Dispatch => {
 const AccordionComponent = (props: AccordionProps) => (
 	<div>
 		<h1 onClick={props.toggle}>{props.header}</h1>
-		<p style={props.active ? styles.active : styles.inactive}>{props.message}</p>
+		<p className={props.active ? "active" : "inactive"}>{props.message}</p>
 	</div>
 );
 

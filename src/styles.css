@@ -15,3 +15,11 @@ p {
 	margin-top: 1px;
 	padding: 5px;
 }
+
+.inactive {
+    display: none;
+}
+
+.active {
+    display: inherit;
+}
