@@ -2,3 +2,5 @@
 bundle.js
 app.d.ts
 node_modules
+src/*.js
+*.map

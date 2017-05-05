@@ -30,6 +30,7 @@ interface Dispatch {
 interface AccordionProps extends State, Dispatch {
 	header?: string;
 	message?: string;
+	children?: React.ReactNode;
 }
 
 let initialState: State = {
@@ -105,11 +106,7 @@ class Accordion extends React.Component<AccordionProps, any> {
 	}
 
 	render() {
-		return <AccordionComponent
-			active={this.props.active}
-			toggle={this.props.toggle}
-			header={this.props.header}
-			message={this.props.message} />
+		return <AccordionComponent {...this.props} />
 	}
 }
 
