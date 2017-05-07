@@ -34,13 +34,8 @@ interface AccordionProps extends State, Dispatch {
 }
 
 let initialState: State = {
-	active: true
+	active: true,
 }
-
-const defaultProps: AccordionProps = {
-	header: "Lorem Ipsum",
-	message: loremIpsum({units: 'paragraphs', random: null})
-};
 
 const nilAction: Action<string> = {
 	type: 'UNKNOWN',
@@ -57,6 +52,7 @@ const actionToggle: ActionCreator<undefined> = () => {
 
 /* Reducer function for toggling current state */
 const reducer = (state: State = {}, action: Action<any> = nilAction): State => {
+	console.log(`REDUCER: ${JSON.stringify(state)}`);
 	switch(action.type) {
 		case 'TOGGLE':
 			console.log(`toggling current state from ${state.active} to ${!state.active}`);
@@ -70,12 +66,8 @@ const reducer = (state: State = {}, action: Action<any> = nilAction): State => {
 }
 
 const mapStateToProps = (state: State, ownProps: AccordionProps): AccordionProps => {
-	// The ownProps represent the properties passed to Accordion
-	// This will assign default properties when ownProps are null
-	let props = Object.assign(defaultProps, ownProps);
-
 	return {
-		...props,
+		...ownProps,
 		active: state.active
 	}
 }
@@ -98,17 +90,29 @@ const AccordionComponent = (props: AccordionProps) => (
 );
 
 /* Container definition - logic */
-@connect(mapStateToProps, mapDispatchToProps)
-class Accordion extends React.Component<AccordionProps, any> {
+class AccordionContainer extends React.Component<AccordionProps, any> {
 
+	public static defaultProps: AccordionProps = {
+		header: "Lorem Ipsum",
+		message: loremIpsum({units: 'paragraphs', random: null})
+	};
+	
 	constructor(props: AccordionProps) {
 		super(props);
 	}
 
+	private test() {
+		console.log('test private function');
+	}
+	
 	render() {
+		console.log(`PROPS: ${JSON.stringify(this.props)}`);
+		this.test();
 		return <AccordionComponent {...this.props} />
 	}
 }
+
+const Accordion = connect(mapStateToProps, mapDispatchToProps)(AccordionContainer);
 
 ReactDOM.render(
 	<Provider store={createStore(reducer, initialState)}>
